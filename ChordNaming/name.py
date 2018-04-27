@@ -45,11 +45,12 @@ def name_chord(notes):
     chord_quality = chordQualities[sequence][0] # fetch chord quality
     return note_letter + ' ' + chord_quality
     
-
+# Dictionary mapping interval sequence ints to chord qualities
 chordQualities = {0:('(single pitch)', 0), 33:('diminished', 0), 34:('minor', 0), 43:('Major', 0), 44:('augmented', 0), 
 233:('half diminished', 1), 333:('fully diminished', 0), 332:('dominant 7', 3), 341:('Major 7', 3), 
 143:('Major 7', 1), 323:('minor 7', 2), 422:('augmented-7', 3), 224:('augmented-7', 2)} 
 
+# Dictionary mapping int degrees (0-11) to note letters
 noteLetters = {0:'C', 1:'D flat', 2:'D', 3:'E flat', 4:'E', 5:'F', 6:'F sharp', 7:'G', 
 8:'A flat', 9:'A', 10:'B flat', 11:'B'}
 
