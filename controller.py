@@ -35,5 +35,6 @@ for note, mag in mags:
         chord.add(note)
 
 print('mags: \n', mags)
+print('\n')
 chord = list(chord)
 name.process(chord)
