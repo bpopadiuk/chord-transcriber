@@ -6,6 +6,9 @@ def closed_voicing(notes):
        as possible"""
 
     notes.sort() # sort notes in ascending order
+    if len(notes) <= 2:
+        return notes
+
     bass = 0 
     minGap = (notes[-1] - notes[0]) % 12  
     for i in range(1, len(notes)):          # for every note, check gap between note and previous note (outter voices)
