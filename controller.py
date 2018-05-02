@@ -5,8 +5,8 @@ from ProcessWav import processwav
 from Goertzel import working_goertzel
 from AudioInput import wav_capture
 
-SAMPLE_RATE = 44100
-WINDOW_SIZE = 4096
+SAMPLE_RATE = 44800
+WINDOW_SIZE = 8192 
 
 t = np.linspace(0, 1, SAMPLE_RATE)[:WINDOW_SIZE]
 #sine_wave = np.sin(2*np.pi*440*t) + np.sin(2*np.pi*392*t) + np.sin(2*np.pi*261*t) + np.sin(2*np.pi*329*t)# should be 'F Major 7'
@@ -15,7 +15,7 @@ sine_wave = np.sin(2*np.pi*233.08*t) + np.sin(2*np.pi*207.65*t) + np.sin(2*np.pi
 sine_wave = sine_wave * np.hamming(WINDOW_SIZE)
 wav = wav_capture.capture()
 data = processwav.process_wav()
-#audio = audio * np.hamming(WINDOW_SIZE)
+data = data * np.hamming(WINDOW_SIZE)
 
 freqs0 = [1046.5, 1108.73, 1174.66, 1244.51, 1318.51, 1396.91, 1479.98, 1567.98, 1661.22, 1760.00, 1864.66, 1975.53]
 freqs1 = [261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.3, 440.00, 466.16, 493.88]
@@ -31,7 +31,7 @@ magMin = min(mags, key=lambda x: x[1])[1]
 magMax = max(mags, key=lambda x: x[1])[1]
 magRange = magMax - magMin
 for note, mag in mags:
-    if mag > magMax * 0.6:
+    if mag > magMax * 0.25:
         chord.add(note)
 
 print('mags: \n', mags)
