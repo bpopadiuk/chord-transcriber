@@ -1,27 +1,39 @@
+"""
+Implementation of the Goertzel Algorithm, used here to compute the relative 
+magnitude of each frequency on the keyboard
+
+Source for algorithm: Kevin Banks
+https://www.embedded.com/design/configurable-systems/4024443/The-Goertzel-Algorithm
+
+SAMPLE_RATE and WINDOW_SIZE are still works in progress. More research needs to
+be done to identify optimal values. For now they're more or less voodoo constants
+that seem to work the best for me thusfar. 
+"""
+
 import math
 import numpy as np
 from ChordNaming import name
 from ProcessWav import processwav
 
-SAMPLE_RATE = 44800
-WINDOW_SIZE = 8192 
+# SAMPLE_RATE = 44800
+# WINDOW_SIZE = 8192 
 
-def goertzel_mag(numSamples, targetFreqs, sampRate, data):
+def goertzel_mag(numSamples, targetFreqs, sampleRate, data):
     scalingFactor = numSamples / 2.0
-    floatnumSamples = float(numSamples)
+    numSamples = float(numSamples)
     magnitudes = []
 
     for freq in targetFreqs:
-        k = int((0.5 + ((floatnumSamples * freq) / sampRate)))
-        omega = (2.0 * math.pi * k) / floatnumSamples
-        sine = math.sin(omega)
-        cosine = math.cos(omega)
+        k = int((0.5 + ((numSamples * freq) / sampleRate)))
+        w = (2.0 * math.pi * k) / numSamples
+        sine = math.sin(w)
+        cosine = math.cos(w)
         coeff = 2.0 * cosine
         q0 = 0
         q1 = 0
         q2 = 0
 
-        for i in range(numSamples):
+        for i in range(int(numSamples)):
             q0 = coeff * q1 - q2 + data[i]
             q2 = q1
             q1 = q0
