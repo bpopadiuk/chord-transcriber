@@ -1,4 +1,12 @@
-"""PyAudio example: Record a few seconds of audio and save to a WAVE file."""
+"""
+Record 0.2 seconds of audio and save as a .wav file for processing.
+
+CHUNK and RATE are unorthodox values at the moment. I'm playing with 
+them to improve frequency resolution when processing the audio with
+goertzel filters. I need to do more research to identify optimal 
+values...
+"""
+
 import pyaudio
 import wave
 
