@@ -18,6 +18,7 @@ def capture():
     RATE = 48000
     RECORD_SECONDS = 0.5
     WAVE_OUTPUT_FILENAME = "output.wav"
+    DEVICE = input("Enter 0 for built-in mic, 2 for usb mic ")
 
     p = pyaudio.PyAudio()
 
@@ -25,10 +26,10 @@ def capture():
                     channels=CHANNELS,
                     rate=RATE,
                     input=True,
-                    input_device_index=2,
+                    input_device_index=DEVICE,
                     frames_per_buffer=CHUNK)
 
-    print("recording...")
+    print("listening...")
 
     frames = []
 
