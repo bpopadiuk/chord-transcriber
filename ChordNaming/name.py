@@ -61,13 +61,14 @@ noteLetters = {0:'C', 1:'D flat', 2:'D', 3:'E flat', 4:'E', 5:'F', 6:'F sharp', 
 
 # frequency processing functions
 def process(freqs):
-    notes = []
+    notes = set()
     bass = float(freqs[0])
     for i in range(len(freqs)):
         frequency = float(freqs[i])
-        notes.append(compute_note(frequency))
+        notes.add(compute_note(frequency))
         if frequency < bass:
             bass = frequency
+    notes = list(notes)
     chord = name_chord(notes) 
     bass = noteLetters[compute_note(bass)]
     print('Chord: ', chord)

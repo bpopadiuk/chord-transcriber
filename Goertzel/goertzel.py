@@ -15,9 +15,6 @@ import numpy as np
 from ChordNaming import name
 from ProcessWav import processwav
 
-# SAMPLE_RATE = 44800
-# WINDOW_SIZE = 8192 
-
 def goertzel_mag(numSamples, targetFreqs, sampleRate, data):
     scalingFactor = numSamples / 2.0
     numSamples = float(numSamples)

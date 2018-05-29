@@ -6,7 +6,7 @@ def process_wav():
     snd = snd / (2.**15)
     s1 = snd[:,0]
 
-    timeArray = pylab.arange(0, snd.shape[0], 1)
-    timeArray = timeArray / sampFreq
-    timeArray = timeArray * 1000 # scale to milliseconds
+#    timeArray = pylab.arange(0, snd.shape[0], 1)
+#    timeArray = timeArray / sampFreq
+#    timeArray = timeArray * 1000 # scale to milliseconds
     return s1

@@ -12,11 +12,11 @@ import wave
 
 def capture():
 
-    CHUNK = 8192 
+    CHUNK = 16384
     FORMAT = pyaudio.paInt16
     CHANNELS = 2
-    RATE = 44800
-    RECORD_SECONDS = 0.2
+    RATE = 48000
+    RECORD_SECONDS = 0.5
     WAVE_OUTPUT_FILENAME = "output.wav"
 
     p = pyaudio.PyAudio()
@@ -25,6 +25,7 @@ def capture():
                     channels=CHANNELS,
                     rate=RATE,
                     input=True,
+                    input_device_index=2,
                     frames_per_buffer=CHUNK)
 
     print("recording...")
