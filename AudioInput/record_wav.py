@@ -10,7 +10,7 @@ values...
 import pyaudio
 import wave
 
-def capture():
+def capture(DEVICE):
 
     CHUNK = 16384
     FORMAT = pyaudio.paInt16
@@ -18,7 +18,6 @@ def capture():
     RATE = 48000
     RECORD_SECONDS = 0.5
     WAVE_OUTPUT_FILENAME = "output.wav"
-    DEVICE = input("Enter 0 for built-in mic, 2 for usb mic ")
 
     p = pyaudio.PyAudio()
 

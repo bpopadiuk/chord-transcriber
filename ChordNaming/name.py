@@ -71,8 +71,7 @@ def process(freqs):
     notes = list(notes)
     chord = name_chord(notes) 
     bass = noteLetters[compute_note(bass)]
-    print('Chord: ', chord)
-    print('Bass: ', bass)
+    return chord, bass
 
 def compute_note(f_n):
     """Convert f_n (frequency in Hz) to an int 0-11 corresponding 

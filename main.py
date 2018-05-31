@@ -7,38 +7,51 @@ from AudioInput import record_wav
 
 SAMPLE_RATE = 48000
 WINDOW_SIZE = 16384
+DEVICE_INDEX = input("Enter Device:\n0: Built-in Microphone\n2: USB Microphone\n-> ")
+LOOP = 1
+HEADER = "CHORD\t\tBASS\t\tNOTES\n----\t\t----\t\t-----\n"
 
-#t = np.linspace(0, 1, SAMPLE_RATE)[:WINDOW_SIZE]
-#sine_wave = np.sin(2*np.pi*440*t) + np.sin(2*np.pi*392*t) + np.sin(2*np.pi*261*t) + np.sin(2*np.pi*329*t)# should be 'F Major 7'
-#sine_wave = np.sin(2*np.pi*1046*t) + np.sin(2*np.pi*1318*t) + np.sin(2*np.pi*1567*t) + np.sin(2*np.pi*1975*t)# should be 'C Major 7'
-#sine_wave = np.sin(2*np.pi*233.08*t) + np.sin(2*np.pi*207.65*t) + np.sin(2*np.pi*138.59*t) + np.sin(2*np.pi*174.61*t)# should be 'Bb minor 7'
-#sine_wave = sine_wave * np.hamming(WINDOW_SIZE)
-wav = record_wav.capture()
-data = processwav.process_wav()
-data = data * np.hamming(WINDOW_SIZE)
+def menu():
+    while(1):
+        userInput = input("\n0: Exit\n1: Transcribe a Chord\n-> ")
+        if userInput == 0 or userInput == 1:
+            break
+        else:
+            continue
+    return userInput
 
-#octave0 = [130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65, 220.00, 233.08, 246.94]
-octave1 = [261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.3, 440.00, 466.16, 493.88]
-octave2 = [523.25, 554.37, 587.33, 622.25, 659.25, 698.46, 739.99, 783.99, 830.61, 880.00, 932.33, 987.77]
-#octave3 = [1046.5, 1108.73, 1174.66, 1244.51, 1318.51, 1396.91, 1479.98, 1567.98, 1661.22, 1760.00, 1864.66, 1975.53]
-#freqs = octave0 + octave1 + octave2 + octave3
-freqs = octave1 + octave2
+while(1):
+    LOOP = menu()
+    if LOOP == 0:
+        quit() 
+    wav = record_wav.capture(DEVICE_INDEX)
+    data = processwav.process_wav()
+    data = data * np.blackman(WINDOW_SIZE) # Exact Blackman instead of Hamming taper function -- offers more precision
 
-mags = goertzel.goertzel_mag(WINDOW_SIZE, freqs, SAMPLE_RATE, data)
+    octave0 = [130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65, 220.00, 233.08, 246.94]
+    octave1 = [261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.3, 440.00, 466.16, 493.88]
+    octave2 = [523.25, 554.37, 587.33, 622.25, 659.25, 698.46, 739.99, 783.99, 830.61, 880.00, 932.33, 987.77]
+    #octave3 = [1046.5, 1108.73, 1174.66, 1244.51, 1318.51, 1396.91, 1479.98, 1567.98, 1661.22, 1760.00, 1864.66, 1975.53]
+    #freqs = octave0 + octave1 + octave2 + octave3
+    freqs = octave0 + octave1 + octave2
 
-mags.sort(key=lambda x : x[1], reverse=True)
+    mags = goertzel.goertzel_mag(WINDOW_SIZE, freqs, SAMPLE_RATE, data)
 
-chord = [] 
-magMin = min(mags, key=lambda x: x[1])[1]
-magMax = max(mags, key=lambda x: x[1])[1]
-magRange = magMax - magMin
-for note, mag in mags:
-    if mag > magMax * 0.1:
-        chord.append(note)
+    mags.sort(key=lambda x : x[1], reverse=True)
 
-notes = [name.noteLetters[name.compute_note(x[0])] for x in mags]
-for i in range(len(mags)):
-    print(notes[i], mags[i])
-print('\n')
-print(set([name.noteLetters[name.compute_note(x)] for x in chord]))
-name.process(chord)
+    chord = [] 
+    magMin = min(mags, key=lambda x: x[1])[1]
+    magMax = max(mags, key=lambda x: x[1])[1]
+    magRange = magMax - magMin
+    for note, mag in mags:
+        if mag > magMax * 0.1:
+            chord.append(note)
+
+    notes = [name.noteLetters[name.compute_note(x[0])] for x in mags]
+    for i in range(len(mags)):
+        print(notes[i], mags[i])
+    print('\n')
+    print(set([name.noteLetters[name.compute_note(x)] for x in chord]))
+    chord, bass = name.process(chord)
+    print(HEADER)
+    print('{} \t\t {}'.format(chord, bass))

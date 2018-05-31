@@ -26,7 +26,6 @@ def goertzel_mag(numSamples, targetFreqs, sampleRate, data):
         sine = math.sin(w)
         cosine = math.cos(w)
         coeff = 2.0 * cosine
-        q0 = 0
         q1 = 0
         q2 = 0
 
