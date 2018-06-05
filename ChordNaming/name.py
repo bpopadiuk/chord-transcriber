@@ -51,9 +51,9 @@ def name_chord(notes):
 # Dictionary mapping interval sequence ints to chord qualities
 chordQualities = {0:('(single pitch)', 0), 1: ('minor second', 0), 2:('Major second', 0), 3:('minor', 0), 
 4:('Major', 0), 5:('Perfect fourth', 0), 6:('tritone', 0), 7:('Perfect fifth', 0), 8:('minor sixth', 0), 
-9:('Major sixth', 0), 10:('minor seventh', 0), 11:('Major seventh', 0), 33:('diminished', 0), 34:('minor', 0), 
+9:('Major sixth', 0), 10:('minor seventh', 0), 11:('Major seventh', 0), 14:('Major 7', 1), 33:('diminished', 0), 34:('minor', 0), 
 43:('Major', 0), 44:('augmented', 0), 233:('half diminished', 1), 333:('fully diminished', 0), 332:('dominant 7', 3), 
-341:('Major 7', 3), 143:('Major 7', 1), 323:('minor 7', 2), 422:('augmented-7', 3), 224:('augmented-7', 2)} 
+341:('Major 7', 3), 143:('Major 7', 1), 323:('minor 7', 2), 422:('augmented-7', 3), 224:('augmented-7', 2), 413:('minor Major 7', 2)} 
 
 # Dictionary mapping int degrees (0-11) to note letters
 noteLetters = {0:'C', 1:'D flat', 2:'D', 3:'E flat', 4:'E', 5:'F', 6:'F sharp', 7:'G', 
@@ -79,6 +79,8 @@ def compute_note(f_n):
     A440 = 9 
     f_0 = 440.0
     a = 1.059463094359
+    # derived from: f_n = f_0 * (a**n)
+    # https://pages.mtu.edu/~suits/NoteFreqCalcs.html
     half_steps_away = log10(f_n/f_0) / log10(a)
-    return int(round((A440 + half_steps_away) % 12)) % 12
+    return int(round(A440 + half_steps_away)) % 12
 
