@@ -12,9 +12,12 @@ LOOP = 1
 HEADER = "\n***CHORD***           ***BASS***          ***NOTES***        \n- - - - - -          - - - - - -          - - - - - -"
 
 def menu():
+    exit = 0
+    transcribe = 1
+    newDevice = 2
     while(1):
-        userInput = input("\n0: Exit\n1: Transcribe a Chord\n-> ")
-        if userInput == 0 or userInput == 1:
+        userInput = input("\n0: Exit\n1: Transcribe a Chord\n2: Choose a New Device\n-> ")
+        if userInput == exit or userInput == transcribe or userInput == newDevice:
             break
         else:
             continue
@@ -25,7 +28,11 @@ DEVICE_INDEX = input('-> ')
 while(1):
     LOOP = menu()
     if LOOP == 0:
-        quit() 
+        quit()
+    elif LOOP == 2:
+        record_wav.device_menu()
+        DEVICE_INDEX = input('-> ')
+        continue
     wav = record_wav.capture(DEVICE_INDEX)
     data = processwav.process_wav()
     data = data * np.blackman(WINDOW_SIZE) # Exact Blackman instead of Hamming taper function -- offers more precision
