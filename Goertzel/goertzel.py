@@ -22,21 +22,23 @@ def goertzel_mag(numSamples, targetFreqs, sampleRate, data):
 
     for freq in targetFreqs:
         k = int((0.5 + ((numSamples * freq) / sampleRate)))
-        w = (2.0 * math.pi * k) / numSamples
-        sine = math.sin(w)
+        w = (2.0 * math.pi / numSamples) * k
         cosine = math.cos(w)
+        sine = math.sin(w)
         coeff = 2.0 * cosine
-        q1 = 0
-        q2 = 0
+        Q1 = 0
+        Q2 = 0
 
         for i in range(int(numSamples)):
-            q0 = coeff * q1 - q2 + data[i]
-            q2 = q1
-            q1 = q0
+            Q0 = coeff * Q1 - Q2 + data[i]
+            Q2 = Q1
+            Q1 = Q0
 
-        real = (q1 - q2 * cosine) / scalingFactor
-        imag = (q2 * sine) / scalingFactor
-        freqMag = math.sqrt(real**2 + imag**2)
+        real = (Q1 - Q2 * cosine) / scalingFactor
+        imag = (Q2 * sine) / scalingFactor
+        freqMagnitude = math.sqrt(real**2 + imag**2)
+        # "optimized" version:
+        # freqMagnitude = math.sqrt(Q1**2 + Q2**2 - Q1 * Q2 * coeff)
 
-        magnitudes.append((freq, freqMag))
+        magnitudes.append((freq, freqMagnitude))
     return magnitudes 

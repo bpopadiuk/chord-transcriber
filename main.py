@@ -57,10 +57,10 @@ while(1):
             chord.append(note)
 
     notes = [name.noteLetters[name.compute_note(x)] for x in chord]
-    #for i in range(len(mags)):
-    #    print(notes[i], mags[i])
+#    for i in range(len(mags)):
+#        print(mags[i])
 #    print('\n')
     #print(set([name.noteLetters[name.compute_note(x)] for x in chord]))
     chord, bass = name.process(chord)
     print(HEADER)
-    print('{}          {}          {}'.format(chord.ljust(11), bass.ljust(11), notes[:4]))
+    print('{}          {}          {}'.format(chord.ljust(11), bass.ljust(11), notes))
