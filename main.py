@@ -2,8 +2,9 @@ import math
 import numpy as np
 from ChordNaming import name
 from ProcessWav import processwav
-from Goertzel import goertzel
 from AudioInput import record_wav 
+
+import ctypes
 
 SAMPLE_RATE = 48000
 WINDOW_SIZE = 16384
@@ -44,8 +45,14 @@ while(1):
     freqs = octave0 + octave1 + octave2 + octave3
     #freqs = octave1 + octave2
 
-    mags = goertzel.goertzel_mag(WINDOW_SIZE, freqs, SAMPLE_RATE, data)
-
+    mags = []
+    lib = ctypes.cdll.LoadLibrary('./Goertzel/libgoertzel.so')
+    goertzel = lib.goertzel
+    goertzel.restype = ctypes.c_double
+    for freq in freqs:
+        magnitude = goertzel(ctypes.c_double(WINDOW_SIZE), ctypes.c_double(freq), ctypes.c_void_p(data.ctypes.data), ctypes.c_int(SAMPLE_RATE))
+        mags.append((freq, magnitude))
+    
     mags.sort(key=lambda x : x[1], reverse=True)
 
     chord = [] 
