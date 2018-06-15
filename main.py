@@ -50,7 +50,10 @@ while(1):
     goertzel = lib.goertzel
     goertzel.restype = ctypes.c_double
     for freq in freqs:
-        magnitude = goertzel(ctypes.c_double(WINDOW_SIZE), ctypes.c_double(freq), ctypes.c_void_p(data.ctypes.data), ctypes.c_int(SAMPLE_RATE))
+        magnitude = goertzel(ctypes.c_double(WINDOW_SIZE),
+                            ctypes.c_double(freq), 
+                            data.ctypes.data_as(ctypes.POINTER(ctypes.c_double)), 
+                            ctypes.c_int(SAMPLE_RATE))
         mags.append((freq, magnitude))
     
     mags.sort(key=lambda x : x[1], reverse=True)
